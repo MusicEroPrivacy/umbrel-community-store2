@@ -1,0 +1,51 @@
+version: "3.7"
+
+services:
+  auroracoind:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: willitmod-dev-aur_auroracoind
+    restart: unless-stopped
+    stop_grace_period: 5m
+    volumes:
+      - ${APP_DATA_DIR}/auroracoin:/data/.auroracoin
+    ports:
+      - "12340:12340"
+    networks:
+      - aur_net
+    environment:
+      - RPC_USER=umbrel
+      - RPC_PASSWORD=${APP_PASSWORD}
+    healthcheck:
+      test: ["CMD", "auroracoin-cli", "-datadir=/data/.auroracoin", "-conf=/data/.auroracoin/auroracoin.conf", "getblockchaininfo"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 120s
+
+  ckpool:
+    build:
+      context: ./ckpool
+      dockerfile: Dockerfile
+    container_name: willitmod-dev-aur_ckpool
+    restart: unless-stopped
+    depends_on:
+      auroracoind:
+        condition: service_healthy
+    volumes:
+      - ${APP_DATA_DIR}/ckpool/logs:/ckpool-logs
+    ports:
+      - "3333:3333"
+    networks:
+      - aur_net
+    environment:
+      - RPC_USER=umbrel
+      - RPC_PASSWORD=${APP_PASSWORD}
+      - RPC_HOST=willitmod-dev-aur_auroracoind
+      - RPC_PORT=12341
+      - AUR_ADDRESS=AQmCPJ6TUcAqghaucodQ42mEVu6jQxx588
+
+networks:
+  aur_net:
+    driver: bridge

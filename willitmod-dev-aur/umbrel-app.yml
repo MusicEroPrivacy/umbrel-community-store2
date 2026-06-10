@@ -1,0 +1,28 @@
+manifestVersion: 1
+id: willitmod-dev-aur
+category: bitcoin
+name: Auroracoin Node
+version: "1.0.0"
+tagline: Pruned AUR node + SHA256d solo mining pool
+description: >-
+  Run a pruned Auroracoin (AUR) full node with a built-in ckpool solo stratum
+  server for SHA256d mining. Auroracoin is a multi-algorithm cryptocurrency
+  originally built on Litecoin/DigiByte foundations.
+
+  Features:
+  - Pruned AUR full node (saves disk space)
+  - ckpool stratum server in solo mode (SHA256d)
+  - P2P port 12340 | RPC port 12341 | Stratum port 3333
+
+developer: WillItMod
+website: https://github.com/WillItMod/umbrel-community-store
+dependencies: []
+repo: https://github.com/aurarad/Auroracoin
+support: https://github.com/WillItMod/umbrel-community-store/issues
+port: 3333
+gallery:
+  - 1.jpg
+path: ""
+defaultUsername: umbrel
+defaultPassword: $APP_PASSWORD
+releaseNotes: ""
